@@ -34,7 +34,7 @@ debug=False
 	
 
 def pause(type_pause=long_pause):
-	if long_pause:
+	if type_pause==long_pause:
 		a=(random.randrange(0,100)+100)/1000
 	else:
 		a=(random.randrange(0,50)+40)/1000
@@ -149,7 +149,7 @@ for line in sys.stdin:
 		if letter=='\b':
 			sys.stdout.write('\033[1D \033[1D')
 			sys.stdout.flush()
-			pause()
+			pause(short_pause)
 		else:
 			sys.stdout.write(letter)
 			sys.stdout.flush()
