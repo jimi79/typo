@@ -145,8 +145,8 @@ def add_mistakes(string):
 
 for line in sys.stdin:
 	l=0
-	org=line
-	line=add_mistakes(line.strip())
+	org=line.strip()
+	line=add_mistakes(org)
 	for letter in line: 
 		if letter=='\b':
 			sys.stdout.write('\033[1D \033[1D')
@@ -157,11 +157,11 @@ for line in sys.stdin:
 			sys.stdout.write(letter)
 			sys.stdout.flush()
 			pause()
-			if letter=='-':
+			if debug and (letter=='-'):
 				l=l-1
 			else:
 				l=l+1
 	print('')
-	if len(org.strip())!=l:
+	if len(org)!=l:
 		raise Exception("bug, the length doesn't match. Org is %d, typoed is %d" % (len(org.strip()), l))
 
