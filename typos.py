@@ -7,7 +7,7 @@ import random
 
 
 max_chars_before_seeing_mistake=3 # max chars before noticing a mistake
-a_mistake_every_n_chars=[10,30] # how often will we have a mistake (unless the mistake isn't possible, if the char isn't on the keyboard
+a_mistake_every_n_chars=[2,30] # how often will we have a mistake (unless the mistake isn't possible, if the char isn't on the keyboard
 
 key_mistake=2 # max shift between wanted key and actual key on the keyboard
 row_mistake=10 # one change out of n
@@ -35,9 +35,9 @@ debug=False
 
 def pause(type_pause=long_pause):
 	if long_pause:
-		a=(random.randrange(0,100)+20)/1000
+		a=(random.randrange(0,100)+100)/1000
 	else:
-		a=(random.randrange(0,10)+20)/1000
+		a=(random.randrange(0,50)+40)/1000
 	if not debug:
 		time.sleep(a)
 
