@@ -108,7 +108,7 @@ def add_mistakes(string):
 	found=False
 	
 	err_log=''
-	for err in errs: 
+	for err in reversed(errs): 
 		if random.randrange(0,3)==0: #one chance out of 3 to just miss a key
 			l=random.randrange(0, max_chars_before_seeing_mistake+1)
 			s=string[err+1:err+1+l]
@@ -128,7 +128,7 @@ def add_mistakes(string):
 				if a==0: # typed wrong letter
 					s=s+string[err+1:err+1+l]
 					s=s+add_revert(len(s))
-					string=string[0:err]+s+string[err:]
+					string=string[0:err]+s+string[err:] 
 					err_log=err_log+'2'
 				if a==1:
 					s=string[err]+s+string[err+1:err+1+l]
@@ -144,15 +144,24 @@ def add_mistakes(string):
 	return string 
 
 for line in sys.stdin:
+	l=0
+	org=line
 	line=add_mistakes(line.strip())
 	for letter in line: 
 		if letter=='\b':
 			sys.stdout.write('\033[1D \033[1D')
 			sys.stdout.flush()
 			pause(short_pause)
+			l=l-1
 		else:
 			sys.stdout.write(letter)
 			sys.stdout.flush()
 			pause()
+			if letter=='-':
+				l=l-1
+			else:
+				l=l+1
 	print('')
+	if len(org.strip())!=l:
+		raise Exception("bug, the length doesn't match. Org is %d, typoed is %d" % (len(org.strip()), l))
 
