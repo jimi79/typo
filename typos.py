@@ -29,9 +29,7 @@ keyb[3][1]='ZXCVBNM<>?'
 long_pause=1
 short_pause=0
 
-
 debug=False
-	
 
 def pause(type_pause=long_pause):
 	if type_pause==long_pause:
@@ -145,7 +143,7 @@ def add_mistakes(string):
 
 for line in sys.stdin:
 	l=0
-	org=line.strip()
+	org=line.rstrip()
 	line=add_mistakes(org)
 	for letter in line: 
 		if letter=='\b':
