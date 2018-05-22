@@ -154,10 +154,12 @@ for line in sys.stdin:
 	l=0
 	org=line.rstrip()
 	line=add_mistakes(org)
-	for letter in line: 
-		if letter == ' ':
-			if random.randrange(0, chances_very_long_pause)==0:
-				pause(very_long_pause)
+	for i in range (0, len(line)): 
+		letter = line[i]
+		if (letter == ' ') and (i > 1) and (i < len(line) - 2):
+			if line[i-1] != ' ' and line[i+1] != ' ':
+				if random.randrange(0, chances_very_long_pause)==0:
+					pause(very_long_pause)
 		if letter=='\b':
 			sys.stdout.write('\033[1D \033[1D')
 			sys.stdout.flush()
