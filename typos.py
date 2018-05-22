@@ -6,12 +6,16 @@ import random
 
 
 
-max_chars_before_seeing_mistake=3 # max chars before noticing a mistake
+max_chars_before_seeing_mistake=7 # max chars before noticing a mistake
 a_mistake_every_n_chars=[2,30] # how often will we have a mistake (unless the mistake isn't possible, if the char isn't on the keyboard
 
 key_mistake=2 # max shift between wanted key and actual key on the keyboard
 row_mistake=10 # one change out of n
 shift_mistake=3 # one change out of n
+
+chances_very_long_pause=10 # one chance out of 100 for each space the writer does a long pause, like to read a document
+
+speed_factor=2 # 1 is default
 
 #----
 
@@ -26,16 +30,21 @@ keyb[2][1]='ASDFGHJKL:"'
 keyb[3][0]='zxcvbnm,./'
 keyb[3][1]='ZXCVBNM<>?'
 
+very_long_pause=2
 long_pause=1
 short_pause=0
 
 debug=False
 
 def pause(type_pause=long_pause):
-	if type_pause==long_pause:
-		a=(random.randrange(0,100)+100)/1000
+	if type_pause==very_long_pause:
+		a=(random.randrange(0,1000)+1000)/1000
 	else:
-		a=(random.randrange(0,50)+40)/1000
+		if type_pause==long_pause:
+			a=(random.randrange(0,100)+100)/1000
+		else:
+			a=(random.randrange(0,50)+40)/1000
+	a=a/speed_factor
 	if not debug:
 		time.sleep(a)
 
@@ -146,6 +155,9 @@ for line in sys.stdin:
 	org=line.rstrip()
 	line=add_mistakes(org)
 	for letter in line: 
+		if letter == ' ':
+			if random.randrange(0, chances_very_long_pause)==0:
+				pause(very_long_pause)
 		if letter=='\b':
 			sys.stdout.write('\033[1D \033[1D')
 			sys.stdout.flush()
@@ -159,6 +171,8 @@ for line in sys.stdin:
 				l=l-1
 			else:
 				l=l+1
+	if line == '':
+		pause()
 	print('')
 	if len(org)!=l:
 		raise Exception("bug, the length doesn't match. Org is %d, typoed is %d" % (len(org.strip()), l))
